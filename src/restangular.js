@@ -251,7 +251,7 @@ restangular.provider('Restangular', function() {
           idValue = idValue[prop];
         }
       });
-      return angular.copy(idValue);
+      return typeof idValue === 'function' ? idValue.call(elem) : angular.copy(idValue);
     };
 
     config.setIdToElem = function(elem, id /*, route */) {

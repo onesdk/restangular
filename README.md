@@ -1,20 +1,23 @@
-#Restangular
+# Restangular
 
 [![Build Status](https://travis-ci.org/mgonto/restangular.svg?branch=master)](https://travis-ci.org/mgonto/restangular)
+[![Coverage Status](https://coveralls.io/repos/github/mgonto/restangular/badge.svg?branch=master)](https://coveralls.io/github/mgonto/restangular?branch=master)
+[![David](https://img.shields.io/david/dev/mgonto/restangular.svg)](https://david-dm.org/mgonto/restangular/?type=dev)
+[![Known Vulnerabilities](https://snyk.io/test/github/mgonto/restangular/badge.svg)](https://snyk.io/test/github/mgonto/restangular)
 [![PayPayl donate button](https://img.shields.io/badge/paypal-donate-yellow.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=martin%40gon%2eto&lc=US&item_name=Martin%20Gontovnikas&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted "Donate once-off to this project using Paypal")
 [![Donate on Gittip](http://img.shields.io/gittip/mgonto.svg)](https://www.gittip.com/mgonto/)
 <a href="https://twitter.com/intent/tweet?hashtags=&original_referer=http%3A%2F%2Fgithub.com%2F&text=Check+out+Restangular%2C+a+service+for+%23AngularJS+that+makes+it+easy+to+use+Rest+APIs&tw_p=tweetbutton&url=https%3A%2F%2Fgithub.com%2Fmgonto%2Frestangular" target="_blank">
   <img src="http://jpillora.com/github-twitter-button/img/tweet.png"></img>
 </a>
 
-Restangular is an AngularJS service that simplifies common GET, POST, DELETE, and UPDATE requests with a minimum of client code.
-It's a perfect fit for any WebApp that consumes data from a RESTful API.
+Restangular is an AngularJS service that simplifies common GET, POST, DELETE, and UPDATE requests with a minimum of client code. It's a perfect fit for any WebApp that consumes data from a RESTful API.
 
-**Check out a, [live demo on plunkr](http://plnkr.co/edit/d6yDka?p=preview).** It uses the same example as the official [Angular Javascript Project](http://angularjs.org/#wire-up-a-backend)... but Restangularized!
+**Note This version of Restangular [only supports Angular 1](#supported-angular-versions). For an Angular 2+ version of Restangular, check out [ngx-restangular](https://github.com/2muchcoffeecom/ngx-restangular).** It's a separate project with different maintainers, so issues regarding ngx-restangular should be reported [over there](https://github.com/2muchcoffeecom/ngx-restangular/issues) :wink:
 
-You can also **check out [a video introduction of a talk I gave at Devoxx France](http://www.parleys.com/play/535a189ee4b0c5ba17d43455/chapter1/about)** about Restangular
+Learn Restangular! Try the [live demo on plunkr](http://plnkr.co/edit/8qrGeE?p=preview). It uses the same example as the official [Angular Javascript Project](http://angularjs.org/#wire-up-a-backend), but with Restangular! Or watch [a video introduction of a talk I gave at Devoxx France](http://www.parleys.com/play/535a189ee4b0c5ba17d43455/chapter1/about) about Restangular.
 
-#Table of contents
+
+# Table of contents
 
 - [Restangular](#restangular)
 - [Differences with $resource](#differences-with-resource)
@@ -41,6 +44,7 @@ You can also **check out [a video introduction of a talk I gave at Devoxx France
       - [setRequestInterceptor](#setrequestinterceptor)
       - [addRequestInterceptor](#addrequestinterceptor)
       - [setFullRequestInterceptor](#setfullrequestinterceptor)
+      - [addFullRequestInterceptor](#addfullrequestinterceptor)
       - [setErrorInterceptor](#seterrorinterceptor)
       - [setRestangularFields](#setrestangularfields)
       - [setMethodOverriders](#setmethodoverriders)
@@ -83,6 +87,7 @@ You can also **check out [a video introduction of a talk I gave at Devoxx France
     - [How can I access the unrestangularized element as well as the restangularized one?](#how-can-i-access-the-unrestangularized-element-as-well-as-the-restangularized-one)
     - [Restangular fails with status code 0](#restangular-fails-with-status-code-0)
     - [Why does this depend on Lodash / Underscore?](#why-does-this-depend-on-lodash--underscore)
+    - [How do I cancel a request?](#how-do-i-cancel-a-request)
 - [Supported Angular versions](#supported-angular-versions)
 - [Server Frameworks](#server-frameworks)
 - [Releases Notes](#releases-notes)
@@ -133,7 +138,7 @@ $scope.user.one('messages', 123).one('from', 123).getList('unread');
 
 **[Back to top](#table-of-contents)**
 
-#How do I add this to my project?
+## How do I add this to my project?
 
 You can download this by:
 
@@ -144,13 +149,13 @@ You can download this by:
 
 ````html
 <!-- Or use TAG number for specific version. New versions are auto deployed -->
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.js"></script>
-<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/restangular/1.3.1/restangular.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/restangular/1.5.1/restangular.min.js"></script>
 ````
 
 **[Back to top](#table-of-contents)**
 
-#Dependencies
+## Dependencies
 
 Restangular depends on Angular and Lodash (or Underscore).
 
@@ -163,10 +168,12 @@ Each time, there're more Production WebApps using `Restangular`. If your webapp 
 * **Life360** is using Restangular to build the WebApp version of their platform
 * **Thomson Reuters** is using Restangular for the new Webapp they've built
 * **Quran.com** is using Restangular for their alpha/beta app and soon to be main site
+* **[Worldcampus.co](http://www.worldcampus.co)** is using Restangular for their beta international students social network.
+* **[ENTSO-E Transparency Platform](https://transparency.entsoe.eu)**
 
 **[Back to top](#table-of-contents)**
 
-#Starter Guide
+# Starter Guide
 
 ## Quick Configuration (For Lazy Readers)
 This is all you need to start using all the basic Restangular features.
@@ -370,7 +377,7 @@ This is a hook. After each element has been "restangularized" (Added the new met
 **I favor the usage of `addElementTransformer` instead of `onElemRestangularized` whenever possible as the implementation is much cleaner.**
 
 
-This callback is a function that has 3 parameters:
+This callback is a function that has 4 parameters:
 
 * **elem**: The element that has just been restangularized. Can be a collection or a single element.
 * **isCollection**: Boolean indicating if this is a collection or a single element.
@@ -459,7 +466,7 @@ Restangular.setErrorInterceptor(function(response, deferred, responseHandler) {
 
 #### setRestangularFields
 
-Restangular required 3 fields for every "Restangularized" element. These are:
+Restangular requires 7 fields for every "Restangularized" element. These are:
 
 * id: Id of the element. Default: id
 * route: Name of the route of this element. Default: route
@@ -671,7 +678,8 @@ app.controller('MainCtrl', function(Restangular, BingRestangular) {
 
 ### Decoupled Restangular Service
 
-There're some times where you want to use Restangular but you don't want to expose Restangular object anywhere. For those cases, you can actually use the `service` feature of Restangular.
+There're some times where you want to use Restangular but you don't want to expose Restangular object anywhere.
+For those cases, you can actually use the `service` feature of Restangular.
 
 Let's see how it works:
 
@@ -682,6 +690,7 @@ module.factory('Users', function(Restangular) {
 });
 
 // In your controller you inject Users
+Users.get(2) // GET to /users/2
 Users.one(2).get() // GET to /users/2
 Users.post({data}) // POST to /users
 
@@ -693,6 +702,21 @@ Users.getList().then(function(users) {
   user.put();
 })
 ````
+
+You can also use ```withHttpConfig``` on objects created by ```Restangular.service```.
+
+```js
+var personService = Restangular.service('person');
+var entity = personService.withHttpConfig({transformRequest: function(data) {
+  data.fullname = data.firstname + ' ' + data.lastname;
+  return JSON.stringify(data);
+}}).post({
+  "lastname": "Mueller",
+  "firstname": "Gerd"
+}).then(function(resp) {
+    console.log(resp);
+});
+```
 
 We can also use Nested RESTful resources with this:
 
@@ -715,8 +739,8 @@ These are the methods that can be called on the Restangular object.
 * **oneUrl(route, url)**: This will create a new Restangular object that is just a pointer to one element with the specified URL.
 * **allUrl(route, url)**: This creates a Restangular object that is just a pointer to a list at the specified URL.
 * **copy(fromElement)**: This will create a copy of the from element so that we can modify the copied one.
-* **restangularizeElement(parent, element, route, queryParams)**: Restangularizes a new element
-* **restangularizeCollection(parent, element, route, queryParams)**: Restangularizes a new collection
+* **restangularizeElement(parent, element, route, fromServer, collection, reqParams)**: Restangularizes a new element
+* **restangularizeCollection(parent, element, route, fromServer, reqParams)**: Restangularizes a new collection
 
 **[Back to top](#table-of-contents)**
 
@@ -747,7 +771,7 @@ These are the methods that can be called on the Restangular object.
 
 ### Collection methods
 * **getList([queryParams, headers]): Gets itself again (Remember this is a collection)**.
-* **get([id]): Gets one item from the collection by id**.
+* **get(id): Gets one item from the collection by id**.
 * **post(elementToPost, [queryParams, headers])**: Creates a new element of this collection.
 * **head([queryParams, headers])**: Does a HEAD
 * **trace: ([queryParams, headers])**: Does a TRACE
@@ -792,7 +816,7 @@ All custom methods have an alias where you replace `custom` by `do`. For example
 **[Back to top](#table-of-contents)**
 
 ## Copying elements
-Before modifying an object, we sometimes want to copy it and then modify the copied object. We can't use `angular.copy` for this because it'll not change the `this` binded in the functions we add to the object. In this cases, you must use `Restangular.copy(fromElement)`.
+Before modifying an object, we sometimes want to copy it and then modify the copied object. We can't use `angular.copy` for this because it'll not change the `this` bound in the functions we add to the object. In this cases, you must use `Restangular.copy(fromElement)`.
 
 **[Back to top](#table-of-contents)**
 
@@ -1287,9 +1311,27 @@ So, why not use it? If you've never heard of them, by using Restangular, you cou
 
 **[Back to top](#table-of-contents)**
 
+#### How do I cancel a request?
+
+Sometimes you may wish to cancel a request, this is how you would do it:
+
+```
+var canceler = $q.defer();
+Restangular.all('users').withHttpConfig({timeout: canceler.promise}).get();
+canceler.resolve(); // cancels the request
+```
+
+This is a little counterintuitive, so let me explain. Restangular is built on top of `$http`, which takes a timeout parameter. As per the $http docs:
+
+    timeout in milliseconds, or promise that should abort the request when resolved.
+
+Resolving the promise (canceler in this case), will cancel the request.
+
+**[Back to top](#table-of-contents)**
+
 # Supported Angular versions
 
-Restangular supports all angular versions including 1.0.X, 1.1.X and 1.2.X (1.2.4 being the current at the time)
+Restangular supports all Angular versions from 1.0.X - 1.5.X
 
 Also, when using Restangular with version >= 1.1.4, in case you're using Restangular inside a callback not handled by Angular, you have to wrap the whole request with `$scope.apply` to make it work or you need to run one extra `$digest` manually. Check out https://github.com/mgonto/restangular/issues/71
 
